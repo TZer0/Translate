@@ -18,9 +18,8 @@ public:
 	Language();
 };
 
-class RefWord {
+class RefWord : public QListWidgetItem {
 public:
-	QString word;
 	Language *l;
 	RefWord();
 	RefWord(QString, Language*);
@@ -28,19 +27,26 @@ public:
 
 class Word {
 public:
-	QVector<RefWord> trans;
+	QVector<RefWord*> trans;
 	Word() {}
-	bool hasPhrase(QString);
+	bool containsRef(RefWord*);
 };
 
 class QLWContainer : public QObject {
 	Q_OBJECT
 public:
+	QLineEdit *addLine;
 	QListWidget *widget;
 	Language *l;
-	QPushButton *button;
-	QLWContainer(QListWidget *qlw, QPushButton *qpb, Language *lang);
+	QPushButton *add, *remove;
+	QLWContainer(QListWidget *, QPushButton *, QPushButton *, QLineEdit*, Language*);
 	QLWContainer ();
+public slots:
+	void addClick();
+	void removeClick();
+signals:
+	void passAddClick(QString, Language*);
+	void passRemoveClick(RefWord*);
 };
 
 class MainWindow : public QMainWindow
@@ -55,14 +61,20 @@ public:
 	QVector<QLWContainer *> containers;
 	QVector<Language *> langs;
 	QVector<Word *> words;
-	void addToContainer(QString, Language *);
+	Word *selected;
+	void clearContainers();
+	void addToContainer(RefWord*);
 	void showWords(QString);
 	void sync();
 	void reload();
 public slots:
+	void findWord(QListWidgetItem*);
 	void search(QString);
 	void add();
 	void remove();
+	void clearField();
+	void addWord(QString, Language *);
+	void removeWord(RefWord*);
 private:
 	Ui::MainWindow *ui;
 };
