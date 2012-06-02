@@ -38,7 +38,8 @@ class QLWContainer : public QObject {
 public:
 	QListWidget *widget;
 	Language *l;
-	QLWContainer(QListWidget *qlw, Language *lang);
+	QPushButton *button;
+	QLWContainer(QListWidget *qlw, QPushButton *qpb, Language *lang);
 	QLWContainer ();
 };
 
@@ -51,13 +52,15 @@ public:
 	~MainWindow();
 	QSettings *settings;
 	QString requestString(QString displayText);
-	QVector<QLWContainer> containers;
+	QVector<QLWContainer *> containers;
 	QVector<Language *> langs;
 	QVector<Word *> words;
+	void addToContainer(QString, Language *);
+	void showWords(QString);
 	void sync();
 	void reload();
 public slots:
-	void search(QString text);
+	void search(QString);
 	void add();
 	void remove();
 private:
