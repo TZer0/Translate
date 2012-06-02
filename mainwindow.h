@@ -16,6 +16,8 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 	QSettings *settings;
+	QString requestString(QString displayText);
+	void reloadLanguages();
 public slots:
 	void search(QString text);
 	void add();
