@@ -69,6 +69,17 @@
      <string>Search:</string>
     </property>
    </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>801</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="grid"/>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

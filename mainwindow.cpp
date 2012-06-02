@@ -20,8 +20,21 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::reloadLanguages() {
+	int i;
+	QLayoutItem *child;
+	while ((child = ui->grid->takeAt(0)) != 0) {
+		delete child;
+	}
 	settings->beginGroup("languages");
 	QStringList groups = settings->childGroups();
+	for (i = 0; i < groups.size(); i++) {
+		qDebug() << groups.at(i);
+		QLabel *label = new QLabel(groups.at(i), this);
+		QListWidget *qlw = new QListWidget();
+		ui->grid->addWidget(label, 0, i);
+		ui->grid->addWidget(qlw, 1, i);
+		label->show();
+	}
 	settings->endGroup();
 }
 
