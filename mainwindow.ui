@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>823</width>
-    <height>412</height>
+    <width>910</width>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="addLanguage">
     <property name="geometry">
      <rect>
-      <x>730</x>
+      <x>810</x>
       <y>0</y>
       <width>91</width>
       <height>31</height>
@@ -30,7 +30,7 @@
    <widget class="QPushButton" name="removeLanguage">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>710</x>
       <y>0</y>
       <width>101</width>
       <height>31</height>
@@ -43,7 +43,7 @@
    <widget class="QLineEdit" name="searchLine">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>60</x>
       <y>0</y>
       <width>161</width>
       <height>31</height>
@@ -59,7 +59,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>10</y>
       <width>46</width>
       <height>13</height>
@@ -72,13 +72,39 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>40</y>
-      <width>801</width>
-      <height>321</height>
+      <width>881</width>
+      <height>571</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="grid"/>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>10</y>
+      <width>46</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Status:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="curStatus">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>241</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -86,7 +112,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>823</width>
+     <width>910</width>
      <height>21</height>
     </rect>
    </property>

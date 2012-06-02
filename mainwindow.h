@@ -5,8 +5,23 @@
 #include <QtGui>
 
 namespace Ui {
+class QLWContainer;
 class MainWindow;
 }
+class QLWContainer : public QObject {
+	Q_OBJECT
+public:
+	QListWidget *widget;
+	QString l;
+	QLWContainer(QListWidget *qlw, QString lang) {
+		widget = qlw;
+		l = lang;
+	}
+	QLWContainer() {
+		l = "None";
+		widget = NULL;
+	}
+};
 
 class MainWindow : public QMainWindow
 {
@@ -18,6 +33,7 @@ public:
 	QSettings *settings;
 	QString requestString(QString displayText);
 	void reloadLanguages();
+	QVector<QLWContainer> containers;
 public slots:
 	void search(QString text);
 	void add();
