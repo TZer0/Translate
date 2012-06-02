@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->addLanguage, SIGNAL(clicked()), this, SLOT(add()));
 	connect(ui->removeLanguage, SIGNAL(clicked()), this, SLOT(remove()));
 	ui->curStatus->setText(tr("showing all words"));
-	reloadLanguages();
+	reload();
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::reloadLanguages() {
+void MainWindow::reload() {
 	int i, j;
 	i = 0;
 	j = 0;
@@ -52,6 +52,7 @@ void MainWindow::reloadLanguages() {
 
 void MainWindow::search(QString text) {
 	qDebug() << text;
+	ui->curStatus->setText(tr("Searching for: ") + text);
 }
 
 void MainWindow::add() {
@@ -69,7 +70,7 @@ void MainWindow::add() {
 		settings->setValue("exists", 1);
 		settings->endGroup();
 		settings->endGroup();
-		reloadLanguages();
+		reload();
 	}
 }
 void MainWindow::remove() {
@@ -81,7 +82,38 @@ void MainWindow::remove() {
 		settings->remove(reply);
 		settings->endGroup();
 		qDebug() << reply;
-		reloadLanguages();
+		reload();
 	}
 }
 
+Language::Language() {
+	name = "none";
+}
+
+Language::Language(QString n) {
+	name = n;
+}
+QLWContainer::QLWContainer(QListWidget *qlw, Language *lang) {
+	widget = qlw;
+	l = lang;
+}
+QLWContainer::QLWContainer() {
+	l = NULL;
+	widget = NULL;
+}
+RefWord::RefWord() {
+	word = "None";
+	l = NULL;
+}
+RefWord::RefWord(QString w, Language *lang) {
+	word = w;
+	l = lang;
+}
+bool Word::hasPhrase(QString ph) {
+	for (int i = 0; i < trans.size(); i++) {
+		if (trans[i].word.contains(ph)) {
+			return true;
+		}
+	}
+	return false;
+}

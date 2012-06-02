@@ -7,20 +7,39 @@
 namespace Ui {
 class QLWContainer;
 class MainWindow;
+class Word;
+class refWord;
+class Language;
 }
+class Language {
+public:
+	QString name;
+	Language(QString n);
+	Language();
+};
+
+class RefWord {
+public:
+	QString word;
+	Language *l;
+	RefWord();
+	RefWord(QString, Language*);
+};
+
+class Word {
+public:
+	QVector<RefWord> trans;
+	Word() {}
+	bool hasPhrase(QString);
+};
+
 class QLWContainer : public QObject {
 	Q_OBJECT
 public:
 	QListWidget *widget;
-	QString l;
-	QLWContainer(QListWidget *qlw, QString lang) {
-		widget = qlw;
-		l = lang;
-	}
-	QLWContainer() {
-		l = "None";
-		widget = NULL;
-	}
+	Language *l;
+	QLWContainer(QListWidget *qlw, Language *lang);
+	QLWContainer ();
 };
 
 class MainWindow : public QMainWindow
@@ -32,8 +51,11 @@ public:
 	~MainWindow();
 	QSettings *settings;
 	QString requestString(QString displayText);
-	void reloadLanguages();
 	QVector<QLWContainer> containers;
+	QVector<Language *> langs;
+	QVector<Word *> words;
+	void sync();
+	void reload();
 public slots:
 	void search(QString text);
 	void add();
