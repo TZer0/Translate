@@ -76,6 +76,7 @@ public:
 	void showWords(QString);
 	void sync();
 	void reload();
+	void sort();
 public slots:
 	void findWord(QListWidgetItem*);
 	void search(QString);

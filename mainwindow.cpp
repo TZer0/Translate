@@ -18,11 +18,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->source, SIGNAL(clicked()), this, SLOT(sourceClick()));
 	reload();
 	sync();
-	search("");
 }
 
 MainWindow::~MainWindow() {
 	delete ui;
+}
+
+void MainWindow::sort() {
+	for (int i = 0; i < containers.size(); i++) {
+		containers[i]->widget->sortItems();
+	}
 }
 
 void MainWindow::reload() {
@@ -111,6 +116,7 @@ void MainWindow::reload() {
 	}
 	settings->endArray();
 	search("");
+	sort();
 }
 
 void MainWindow::sync() {
@@ -162,6 +168,7 @@ void MainWindow::showWords(QString text) {
 			}
 		}
 	}
+	sort();
 }
 
 void MainWindow::search(QString text) {
@@ -172,6 +179,7 @@ void MainWindow::search(QString text) {
 		ui->curStatus->setText(tr("showing all words."));
 	}
 	showWords(text);
+	sort();
 }
 
 void MainWindow::add() {
