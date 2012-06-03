@@ -1,0 +1,13 @@
+qmake the .pro-file and make to compile.
+
+This is a simple program for reading a map, add a bunch of tags to said map and then save that map. It was made to show variations of words across languages.
+
+Instructions:
+1. Add languages.
+2. Add words, to add relatives of a word in other and the same language, double-click, then add words (not to select a word and the relatives of a word, double click it).
+3. Adjust the position of the tags using the x and y-fields per language.
+4. Load a map-file.
+5. Hit Generate Map
+6. Save
+
+To see the repository, click source, the about button shows who made this.
