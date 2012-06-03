@@ -17,6 +17,7 @@ On Windows the settings are stored in:
 %USER%\appdata\roaming\TZer0\translate.ini
 On Linux:
 ${HOME}/.config/TZer0/translate.ini
+On Mac... I have no idea, probably same as Linux.
 
 Known issue:
 You can add duplicate words to a group of relatives within a language - these words disappear when you restart the program.
