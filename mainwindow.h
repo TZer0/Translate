@@ -10,7 +10,16 @@ class MainWindow;
 class Word;
 class refWord;
 class Language;
+class MapStore;
 }
+class MapStore : public QObject {
+	Q_OBJECT
+public:
+	QPixmap *map;
+	MapStore(QPixmap*);
+public slots:
+	void save();
+};
 class Language {
 public:
 	QString name;
@@ -38,8 +47,8 @@ public:
 	QLineEdit *addLine;
 	QListWidget *widget;
 	Language *l;
-	QPushButton *add, *remove;
-	QLWContainer(QListWidget *, QPushButton *, QPushButton *, QLineEdit*, Language*);
+	QSpinBox *x, *y;
+	QLWContainer(QListWidget *, QLineEdit*, QSpinBox*, QSpinBox*, Language*);
 	QLWContainer ();
 public slots:
 	void addClick();
@@ -75,6 +84,10 @@ public slots:
 	void clearField();
 	void addWord(QString, Language *);
 	void removeWord(RefWord*);
+	void loadImage();
+	void genImage();
+	void aboutClick();
+	void sourceClick();
 private:
 	Ui::MainWindow *ui;
 };
