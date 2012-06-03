@@ -4,7 +4,7 @@ This is a simple program for reading a map, add a bunch of tags to said map and 
 
 Instructions:
 1. Add languages.
-2. Add words, to add relatives of a word in other and the same language, double-click, then add words (not to select a word and the relatives of a word, double click it).
+2. Add words, to add relatives of a word in other and the same language, double-click that word, then add words.
 3. Adjust the position of the tags using the x and y-fields per language.
 4. Load a map-file (if you are using the same map over and over again, then skip this step after the first time).
 5. Hit Generate Map
