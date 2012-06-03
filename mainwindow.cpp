@@ -307,6 +307,7 @@ void MainWindow::genImage() {
 			QList<QListWidgetItem *> w = containers[i]->widget->selectedItems();
 			if (w.size() > 0) {
 				w[0]->text();
+				p.save();
 				p.translate(containers[i]->x->value(),containers[i]->y->value()+17);
 				p.rotate(containers[i]->rot->value());
 				p.drawText(0, 0, w[0]->text());
