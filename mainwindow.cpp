@@ -80,22 +80,21 @@ void MainWindow::reload() {
 		connect(tmp, SIGNAL(passRemoveClick(RefWord*)), this, SLOT(removeWord(RefWord*)));
 
 		containers.push_back(tmp);
-		ui->grid->addWidget(label, j, (i%5)*2, 1, 2);
-		ui->grid->addWidget(qlw, j+1, (i%5)*2, 1, 2);
-		ui->grid->addWidget(remove, j+2, (i%5)*2, 1, 2);
-		ui->grid->addWidget(qle, j+3, (i%5)*2, 1, 2);
-		ui->grid->addWidget(add, j+4, (i%5)*2, 1, 2);
-		ui->grid->addWidget(new QLabel("X:"), j+5,(i%5)*2, 1, 1);
-		ui->grid->addWidget(new QLabel("Y:"), j+5,(i%5)*2+1, 1, 1);
-		ui->grid->addWidget(xSpin, j+6, (i%5)*2, 1, 1);
-		ui->grid->addWidget(ySpin, j+6, (i%5)*2+1, 1, 1);
-		ui->grid->addWidget(new QLabel("Rotate:"), j+7,(i%5)*2, 1, 2);
-		ui->grid->addWidget(rotate, j+8, (i%5)*
-		2, 1, 2);
+		ui->grid->addWidget(label, j, (i%5)*3, 1, 3);
+		ui->grid->addWidget(qlw, j+1, (i%5)*3, 1, 3);
+		ui->grid->addWidget(remove, j+2, (i%5)*3, 1, 3);
+		ui->grid->addWidget(qle, j+3, (i%5)*3, 1, 3);
+		ui->grid->addWidget(add, j+4, (i%5)*3, 1, 3);
+		ui->grid->addWidget(new QLabel("X:"), j+5,(i%5)*3, 1, 1);
+		ui->grid->addWidget(new QLabel("Y:"), j+5,(i%5)*3+1, 1, 1);
+		ui->grid->addWidget(new QLabel("Rotate:"), j+5,(i%5)*3+2, 1, 1);
+		ui->grid->addWidget(xSpin, j+6, (i%5)*3, 1, 1);
+		ui->grid->addWidget(ySpin, j+6, (i%5)*3+1, 1, 1);
+		ui->grid->addWidget(rotate, j+6, (i%5)*3+2, 1, 1);
 
 		label->show();
 		if ((i+1)%5 == 0) {
-			j+=9;
+			j+=7;
 		}
 		settings->endGroup();
 	}
@@ -305,6 +304,9 @@ void MainWindow::genImage() {
 		p.setFont(QFont("arial", 16));
 		for (int i = 0; i < containers.size(); i++) {
 			QList<QListWidgetItem *> w = containers[i]->widget->selectedItems();
+			if (w.size() == 0) {
+				w = containers[i]->widget->findItems("", Qt::MatchContains);
+			}
 			if (w.size() > 0) {
 				w[0]->text();
 				p.save();
