@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TZer0", "translate", this);
-	qDebug() << settings->fileName();
+        qDebug() << settings->fileName();
 	connect(ui->searchLine, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));;
 	connect(ui->addLanguage, SIGNAL(clicked()), this, SLOT(add()));
 	connect(ui->removeLanguage, SIGNAL(clicked()), this, SLOT(remove()));
@@ -209,12 +209,13 @@ void MainWindow::removeWord(RefWord *word) {
 				delete tmp;
 				if ( words[i]->trans.isEmpty()) {
 					Word *tmpW = words[i];
-					words.remove(i);
+                                        words.remove(i);
 					if (tmpW == selected) {
 						selected = NULL;
 					}
 					delete tmpW;
-				}
+                                }
+                                break;
 			}
 		}
 	}
@@ -256,8 +257,9 @@ void QLWContainer::addClick() {
 }
 void QLWContainer::removeClick() {
 	QList<QListWidgetItem *> sel = widget->selectedItems();
-	for (int i = 0; i < sel.size(); i++ ){
-		emit passRemoveClick((RefWord*)sel[i]);
+	while ( 0 < sel.size()) {
+		emit passRemoveClick((RefWord*)sel[0]);
+		sel.removeAt(0);
 	}
 }
 
