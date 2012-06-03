@@ -75,6 +75,7 @@ void MainWindow::reload() {
 		QLWContainer *tmp = new QLWContainer(qlw, qle, xSpin, ySpin, rotate, lang);
 
 		connect(add, SIGNAL(clicked()), tmp, SLOT(addClick()));
+		connect(qle, SIGNAL(returnPressed()), tmp, SLOT(addClick()));
 		connect(remove, SIGNAL(clicked()), tmp, SLOT(removeClick()));
 		connect(tmp, SIGNAL(passAddClick(QString,Language*)), this, SLOT(addWord(QString,Language*)));
 		connect(tmp, SIGNAL(passRemoveClick(RefWord*)), this, SLOT(removeWord(RefWord*)));
@@ -368,6 +369,7 @@ QLWContainer::QLWContainer() {
 }
 void QLWContainer::addClick() {
 	emit passAddClick(addLine->text(), l);
+	addLine->setText("");
 }
 void QLWContainer::removeClick() {
 	QList<QListWidgetItem *> sel = widget->selectedItems();
