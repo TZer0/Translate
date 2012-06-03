@@ -379,6 +379,6 @@ void MapStore::save() {
 			    "/home/jana/untitled.png",
 			    tr("Images (*.png )"));
 	if (filename.size() != 0) {
-		qDebug() << map->save(filename, 0, -1);
+		map->save(filename, 0, -1);
 	}
 }
