@@ -47,8 +47,8 @@ public:
 	QLineEdit *addLine;
 	QListWidget *widget;
 	Language *l;
-	QSpinBox *x, *y;
-	QLWContainer(QListWidget *, QLineEdit*, QSpinBox*, QSpinBox*, Language*);
+	QSpinBox *x, *y, *rot;
+	QLWContainer(QListWidget *, QLineEdit*, QSpinBox*, QSpinBox*, QSpinBox*, Language*);
 	QLWContainer ();
 public slots:
 	void addClick();

@@ -66,9 +66,13 @@ void MainWindow::reload() {
 		ySpin->setMaximum(10000);
 		ySpin->setMinimum(0);
 		ySpin->setValue(settings->value("y", 0).toInt());
+		QSpinBox *rotate = new QSpinBox();
+		rotate->setMaximum(360);
+		rotate->setMinimum(0);
+		rotate->setValue(settings->value("rotate", 0).toInt());
 
 		langs.push_back(lang);
-		QLWContainer *tmp = new QLWContainer(qlw, qle, xSpin, ySpin, lang);
+		QLWContainer *tmp = new QLWContainer(qlw, qle, xSpin, ySpin, rotate, lang);
 
 		connect(add, SIGNAL(clicked()), tmp, SLOT(addClick()));
 		connect(remove, SIGNAL(clicked()), tmp, SLOT(removeClick()));
@@ -85,10 +89,13 @@ void MainWindow::reload() {
 		ui->grid->addWidget(new QLabel("Y:"), j+5,(i%5)*2+1, 1, 1);
 		ui->grid->addWidget(xSpin, j+6, (i%5)*2, 1, 1);
 		ui->grid->addWidget(ySpin, j+6, (i%5)*2+1, 1, 1);
+		ui->grid->addWidget(new QLabel("Rotate:"), j+7,(i%5)*2, 1, 2);
+		ui->grid->addWidget(rotate, j+8, (i%5)*
+		2, 1, 2);
 
 		label->show();
 		if ((i+1)%5 == 0) {
-			j+=7;
+			j+=9;
 		}
 		settings->endGroup();
 	}
@@ -125,6 +132,7 @@ void MainWindow::sync() {
 		settings->beginGroup(containers[i]->l->name);
 		settings->setValue("x", containers[i]->x->value());
 		settings->setValue("y", containers[i]->y->value());
+		settings->setValue("rotate", containers[i]->rot->value());
 		settings->endGroup();
 	}
 	settings->endGroup();
@@ -298,7 +306,11 @@ void MainWindow::genImage() {
 		for (int i = 0; i < containers.size(); i++) {
 			QList<QListWidgetItem *> w = containers[i]->widget->selectedItems();
 			if (w.size() > 0) {
-				p.drawText(containers[i]->x->value(),containers[i]->y->value()+17, w[0]->text());
+				w[0]->text();
+				p.translate(containers[i]->x->value(),containers[i]->y->value()+17);
+				p.rotate(containers[i]->rot->value());
+				p.drawText(0, 0, w[0]->text());
+				p.restore();
 			}
 		}
 		p.end();
@@ -337,18 +349,19 @@ Language::Language() {
 Language::Language(QString n) {
 	name = n;
 }
-QLWContainer::QLWContainer(QListWidget *qlw, QLineEdit *qle, QSpinBox *xb, QSpinBox *yb, Language *lang) {
+QLWContainer::QLWContainer(QListWidget *qlw, QLineEdit *qle, QSpinBox *xb, QSpinBox *yb, QSpinBox *rotate, Language *lang) {
 	addLine = qle;
 	widget = qlw;
 	l = lang;
 	x = xb;
 	y = yb;
+	rot = rotate;
 }
 QLWContainer::QLWContainer() {
 	addLine = NULL;
 	l = NULL;
 	widget = NULL;
-	x = y = NULL;
+	x = y = rot = NULL;
 }
 void QLWContainer::addClick() {
 	emit passAddClick(addLine->text(), l);
