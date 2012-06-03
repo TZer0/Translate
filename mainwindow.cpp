@@ -21,8 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	search("");
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 	delete ui;
 }
 
