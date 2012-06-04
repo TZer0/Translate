@@ -89,6 +89,7 @@ public slots:
 	void genImage();
 	void aboutClick();
 	void sourceClick();
+	void storeSize(int size);
 private:
 	Ui::MainWindow *ui;
 };

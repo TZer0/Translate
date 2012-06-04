@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->generate, SIGNAL(clicked()), this, SLOT(genImage()));
 	connect(ui->about, SIGNAL(clicked()), this, SLOT(aboutClick()));
 	connect(ui->source, SIGNAL(clicked()), this, SLOT(sourceClick()));
+	connect(ui->size, SIGNAL(valueChanged(int)), this, SLOT(storeSize(int)));
+	settings->beginGroup("image");
+	ui->size->setValue(settings->value("fSize", 16).toInt());
+	settings->endGroup();
 	reload();
 	sync();
 }
@@ -307,7 +311,7 @@ void MainWindow::genImage() {
 		QPixmap *map = new QPixmap(imgLoc);
 		QPainter p;
 		p.begin(map);
-		p.setFont(QFont("arial", 16));
+		p.setFont(QFont("arial", ui->size->value()));
 		for (int i = 0; i < containers.size(); i++) {
 			QList<QListWidgetItem *> w = containers[i]->widget->selectedItems();
 			if (w.size() == 0) {
@@ -316,7 +320,7 @@ void MainWindow::genImage() {
 			if (w.size() > 0) {
 				w[0]->text();
 				p.save();
-				p.translate(containers[i]->x->value(),containers[i]->y->value()+17);
+				p.translate(containers[i]->x->value(),containers[i]->y->value()+ui->size->value());
 				p.rotate(containers[i]->rot->value());
 				p.drawText(0, 0, w[0]->text());
 				p.restore();
@@ -349,6 +353,11 @@ void MainWindow::aboutClick() {
 }
 void MainWindow::sourceClick() {
 	QDesktopServices::openUrl(QUrl("https://github.com/TZer0/Translate", QUrl::TolerantMode));
+}
+void MainWindow::storeSize(int size) {
+	settings->beginGroup("image");
+	settings->setValue("fSize", size);
+	settings->endGroup();
 }
 
 Language::Language() {
