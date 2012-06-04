@@ -115,7 +115,7 @@ void MainWindow::reload() {
 			settings->beginGroup(langs[j]->name);
 			tmpWords = settings->childKeys();
 			for (k = 0; k < tmpWords.size(); k++) {
-				tmp->trans.push_back(new RefWord(tmpWords[k], langs[j]));
+				tmp->trans.push_back(new RefWord(settings->value(tmpWords[k], "").toString(), langs[j]));
 			}
 			settings->endGroup();
 		}
@@ -138,13 +138,18 @@ void MainWindow::sync() {
 	settings->endGroup();
 	settings->remove("words");
 	settings->beginWriteArray("words");
+	int k = 0;
 	for (int i = 0; i < words.size(); i++) {
-		settings->setArrayIndex(i);
+		if (words[i]->trans.size() == 0) {
+			continue;
+		}
+		settings->setArrayIndex(k);
 		for (int j = 0; j < words[i]->trans.size(); j++) {
 			settings->beginGroup(words[i]->trans[j]->l->name);
-			settings->setValue(words[i]->trans[j]->text(),"");
+			settings->setValue(QString(j),words[i]->trans[j]->text());
 			settings->endGroup();
 		}
+		k++;
 	}
 	settings->endArray();
 }
@@ -401,8 +406,8 @@ MapStore::MapStore(QPixmap *tmp) {
 
 void MapStore::save() {
 	QString filename = QFileDialog::getSaveFileName(0, tr("Save File"),
-			    "/home/jana/untitled.png",
-			    tr("Images (*.png )"));
+							"/home/jana/untitled.png",
+							tr("Images (*.png )"));
 	if (filename.size() != 0) {
 		map->save(filename, 0, -1);
 	}
