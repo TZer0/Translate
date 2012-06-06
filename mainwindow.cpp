@@ -74,9 +74,13 @@ void MainWindow::reload() {
 		rotate->setMaximum(360);
 		rotate->setMinimum(0);
 		rotate->setValue(settings->value("rotate", 0).toInt());
+		QSpinBox *relSize = new QSpinBox();
+		relSize->setMinimum(-100);
+		relSize->setMaximum(100);
+		relSize->setValue(settings->value("relSize", 0).toInt());
 
 		langs.push_back(lang);
-		QLWContainer *tmp = new QLWContainer(qlw, qle, xSpin, ySpin, rotate, lang);
+		QLWContainer *tmp = new QLWContainer(qlw, qle, xSpin, ySpin, rotate, relSize, lang);
 
 		connect(add, SIGNAL(clicked()), tmp, SLOT(addClick()));
 		connect(qle, SIGNAL(returnPressed()), tmp, SLOT(addClick()));
@@ -88,9 +92,11 @@ void MainWindow::reload() {
 		ui->grid->addWidget(label, j, (i%5)*3, 1, 3);
 		ui->grid->addWidget(qlw, j+1, (i%5)*3, 1, 3);
 		ui->grid->addWidget(remove, j+2, (i%5)*3, 1, 3);
-		ui->grid->addWidget(qle, j+3, (i%5)*3, 1, 3);
-		ui->grid->addWidget(add, j+4, (i%5)*3, 1, 3);
-		ui->grid->addWidget(new QLabel("X:"), j+5,(i%5)*3, 1, 1);
+		ui->grid->addWidget(qle, j+3, (i%5)*3, 1, 2);
+		ui->grid->addWidget(add, j+4, (i%5)*3, 1, 2);
+		ui->grid->addWidget(new QLabel("Rel. Size:"), j+3, (i%5)*3+2, 1, 1);
+		ui->grid->addWidget(relSize, j+4, (i%5)*3+2, 1, 1);
+		ui->grid->addWidget(new QLabel("X:"), j+5, (i%5)*3, 1, 1);
 		ui->grid->addWidget(new QLabel("Y:"), j+5,(i%5)*3+1, 1, 1);
 		ui->grid->addWidget(new QLabel("Rotate:"), j+5,(i%5)*3+2, 1, 1);
 		ui->grid->addWidget(xSpin, j+6, (i%5)*3, 1, 1);
@@ -130,16 +136,20 @@ void MainWindow::reload() {
 	sort();
 }
 
-void MainWindow::sync() {
+void MainWindow::syncLangSettings() {
 	settings->beginGroup("languages");
 	for (int i = 0; i < containers.size(); i++) {
 		settings->beginGroup(containers[i]->l->name);
 		settings->setValue("x", containers[i]->x->value());
 		settings->setValue("y", containers[i]->y->value());
 		settings->setValue("rotate", containers[i]->rot->value());
+		settings->setValue("relSize", containers[i]->relSize->value());
 		settings->endGroup();
 	}
 	settings->endGroup();
+}
+void MainWindow::sync() {
+	syncLangSettings();
 	settings->remove("words");
 	settings->beginWriteArray("words");
 	int k = 0;
@@ -302,7 +312,7 @@ void MainWindow::loadImage() {
 	}
 }
 void MainWindow::genImage() {
-	sync();
+	syncLangSettings();
 	settings->beginGroup("image");
 	QString imgLoc = settings->value("loaded","").toString();
 	if (imgLoc.size() != 0) {
@@ -311,8 +321,8 @@ void MainWindow::genImage() {
 		QPixmap *map = new QPixmap(imgLoc);
 		QPainter p;
 		p.begin(map);
-		p.setFont(QFont("arial", ui->size->value()));
 		for (int i = 0; i < containers.size(); i++) {
+			p.setFont(QFont("arial", ui->size->value() + containers[i]->relSize->value()));
 			QList<QListWidgetItem *> w = containers[i]->widget->selectedItems();
 			if (w.size() == 0) {
 				w = containers[i]->widget->findItems("", Qt::MatchContains);
@@ -320,7 +330,8 @@ void MainWindow::genImage() {
 			if (w.size() > 0) {
 				w[0]->text();
 				p.save();
-				p.translate(containers[i]->x->value(),containers[i]->y->value()+ui->size->value());
+				p.translate(containers[i]->x->value(),containers[i]->y->value() +
+					    ui->size->value() + containers[i]->relSize->value());
 				p.rotate(containers[i]->rot->value());
 				p.drawText(0, 0, w[0]->text());
 				p.restore();
@@ -367,19 +378,20 @@ Language::Language() {
 Language::Language(QString n) {
 	name = n;
 }
-QLWContainer::QLWContainer(QListWidget *qlw, QLineEdit *qle, QSpinBox *xb, QSpinBox *yb, QSpinBox *rotate, Language *lang) {
+QLWContainer::QLWContainer(QListWidget *qlw, QLineEdit *qle, QSpinBox *xb, QSpinBox *yb, QSpinBox *rotate, QSpinBox *rel, Language *lang) {
 	addLine = qle;
 	widget = qlw;
 	l = lang;
 	x = xb;
 	y = yb;
 	rot = rotate;
+	relSize = rel;
 }
 QLWContainer::QLWContainer() {
 	addLine = NULL;
 	l = NULL;
 	widget = NULL;
-	x = y = rot = NULL;
+	x = y = rot = relSize = NULL;
 }
 void QLWContainer::addClick() {
 	emit passAddClick(addLine->text(), l);

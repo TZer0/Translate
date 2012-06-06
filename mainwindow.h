@@ -47,8 +47,8 @@ public:
 	QLineEdit *addLine;
 	QListWidget *widget;
 	Language *l;
-	QSpinBox *x, *y, *rot;
-	QLWContainer(QListWidget *, QLineEdit*, QSpinBox*, QSpinBox*, QSpinBox*, Language*);
+	QSpinBox *x, *y, *rot, *relSize;
+	QLWContainer(QListWidget *, QLineEdit*, QSpinBox*, QSpinBox*, QSpinBox*, QSpinBox*, Language*);
 	QLWContainer ();
 public slots:
 	void addClick();
@@ -77,6 +77,7 @@ public:
 	void sync();
 	void reload();
 	void sort();
+	void syncLangSettings();
 public slots:
 	void findWord(QListWidgetItem*);
 	void search(QString);
