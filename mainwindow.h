@@ -92,9 +92,6 @@ public slots:
 	void sourceClick();
 	void storeSize(int size);
 	void openFileManager();
-private slots:
-	void on_actionReload_triggered();
-
 private:
 	Ui::MainWindow *ui;
 };

@@ -441,8 +441,3 @@ void MapStore::save() {
 		map->save(filename, 0, -1);
 	}
 }
-
-void MainWindow::on_actionReload_triggered()
-{
-
-}
