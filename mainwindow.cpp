@@ -7,7 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TZer0", "translate", this);
-	qDebug() << settings->fileName();
+	ui->location->setEnabled(false);
+	ui->location->setText("Data saved in: " + settings->fileName());
+	connect(ui->goToLocation, SIGNAL(clicked()), this, SLOT(openFileManager()));
 	connect(ui->searchLine, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));;
 	connect(ui->addLanguage, SIGNAL(clicked()), this, SLOT(add()));
 	connect(ui->removeLanguage, SIGNAL(clicked()), this, SLOT(remove()));
@@ -53,6 +55,9 @@ void MainWindow::reload() {
 	langs.clear();
 	settings->beginGroup("languages");
 	QStringList groups = settings->childGroups();
+	if (groups.size() == 0) {
+		ui->grid->addItem(new QSpacerItem(0, 0,QSizePolicy::Expanding, QSizePolicy::Expanding), 0, 0, 1, 1);
+	}
 	for (i = 0; i < groups.size(); i++) {
 		settings->beginGroup(groups[i]);
 		QLabel *label = new QLabel(groups.at(i), this);
@@ -370,6 +375,9 @@ void MainWindow::storeSize(int size) {
 	settings->setValue("fSize", size);
 	settings->endGroup();
 }
+void MainWindow::openFileManager() {
+	QDesktopServices::openUrl(QUrl("file:///" + QDir::toNativeSeparators(settings->fileName().remove("translate.ini"))));
+}
 
 Language::Language() {
 	name = "none";
@@ -432,4 +440,9 @@ void MapStore::save() {
 	if (filename.size() != 0) {
 		map->save(filename, 0, -1);
 	}
+}
+
+void MainWindow::on_actionReload_triggered()
+{
+
 }
