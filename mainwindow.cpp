@@ -309,7 +309,7 @@ void MainWindow::clearField() {
 
 void MainWindow::loadImage() {
 	QString fileName = QFileDialog::getOpenFileName(this,
-							tr("Open Image"), "/home/jana", tr("Image Files (*.png *.jpg *.bmp)"));
+							tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
 	if (fileName.size() != 0) {
 		settings->beginGroup("image");
 		settings->setValue("loaded", fileName);
@@ -435,7 +435,7 @@ MapStore::MapStore(QPixmap *tmp) {
 
 void MapStore::save() {
 	QString filename = QFileDialog::getSaveFileName(0, tr("Save File"),
-							"/home/jana/untitled.png",
+							".",
 							tr("Images (*.png )"));
 	if (filename.size() != 0) {
 		map->save(filename, 0, -1);
