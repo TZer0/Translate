@@ -130,8 +130,9 @@ void MainWindow::reload() {
 			settings->beginGroup(langs[j]->name);
 			tmpWords = settings->childKeys();
 			for (k = 0; k < tmpWords.size(); k++) {
-				tmp->trans.push_back(new RefWord(settings->value(tmpWords[k], "").toString(), langs[j]));
+				tmp->addWord(new RefWord(settings->value(tmpWords[k], "").toString(), langs[j]));
 			}
+			tmp->updateColors(langs.size());
 			settings->endGroup();
 		}
 		this->words.push_back(tmp);
@@ -259,15 +260,17 @@ void MainWindow::findWord(QListWidgetItem *word){
 
 void MainWindow::addWord(QString w, Language *l) {
 	if (selected) {
-		selected->trans.push_back(new RefWord(w, l));
+		selected->addWord(new RefWord(w, l));
 		addToContainer(selected->trans[selected->trans.size()-1]);
 		sync();
+		selected->updateColors(langs.size());
 	} else {
 		Word *tmp = new Word();
-		tmp->trans.push_back(new RefWord(w, l));
+		tmp->addWord(new RefWord(w, l));
 		words.push_back(tmp);
 		sync();
 		findWord(tmp->trans[0]);
+		tmp->updateColors(langs.size());
 	}
 }
 
@@ -278,6 +281,7 @@ void MainWindow::removeWord(RefWord *word) {
 			if (words[i]->trans[j] == word) {
 				RefWord *tmp = words[i]->trans[j];
 				words[i]->trans.remove(j);
+				words[i]->updateColors(langs.size());
 				delete tmp;
 				if ( words[i]->trans.isEmpty()) {
 					Word *tmpW = words[i];
@@ -431,6 +435,26 @@ bool Word::containsRef(RefWord *word) {
 }
 MapStore::MapStore(QPixmap *tmp) {
 	map = tmp;
+}
+
+void Word::addWord(RefWord *word) {
+	trans.push_back(word);
+}
+
+void Word::updateColors(int numLangs) {
+	QSet<Language*> found;
+	for (int i = 0; i < trans.size(); i++) {
+		found.insert(trans[i]->l);
+	}
+	QColor c;
+	if (numLangs == trans.size()) {
+		c = Qt::white;
+	} else {
+		c = QColor(230, 230, 230);
+	}
+	for (int i = 0; i < trans.size(); i++) {
+		trans[i]->setBackgroundColor(c);
+	}
 }
 
 void MapStore::save() {

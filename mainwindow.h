@@ -39,6 +39,8 @@ public:
 	QVector<RefWord*> trans;
 	Word() {}
 	bool containsRef(RefWord*);
+	void addWord(RefWord*);
+	void updateColors(int);
 };
 
 class QLWContainer : public QObject {
