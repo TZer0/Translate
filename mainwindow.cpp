@@ -444,10 +444,10 @@ void Word::addWord(RefWord *word) {
 void Word::updateColors(int numLangs) {
 	QSet<Language*> found;
 	for (int i = 0; i < trans.size(); i++) {
-		found.insert(trans[i]->l);
+			found.insert(trans[i]->l);
 	}
 	QColor c;
-	if (numLangs == trans.size()) {
+	if (numLangs == found.size()) {
 		c = Qt::white;
 	} else {
 		c = QColor(230, 230, 230);
